@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Zotero RSS</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://storage.googleapis.com/feednami-static/js/feednami-client-v1.0.1.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script>
+      var rssurl = "https://api.zotero.org/users/319683/items/top?start=0&format=atom&v=1";
+
+      $.get(rssurl, function(data) {
+        var xml = $(data);
+        xml.find("entry").each(function() {
+          item = {
+              title: $(this).find("title").text(),
+              link: $(this).find("content").find("tr.url > td").text(),
+              description: $(this).find("content").find("tr.abstractNote > td").text(),
+              date: $(this).find("published").text()
+          }
+          $("#list").append("<h2>" + item.title + "</a></h2>").append("<p>" + item.link + "</p>").append("<p>" + item.date + "</p>").append("<p>" + item.description + "</p>")
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="col-xs-10 col-xs-offset-1">
+        <h1>Zotero RSS</h1>
+        <div id="list"></div>
+      </div>
+
+    </div>
+  </body>
+</html>
