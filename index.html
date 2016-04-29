@@ -18,6 +18,7 @@
         </div>
         <h1>What We&rsquo;re Reading</h1>
         <h4>Rockefeller Archive Center&rsquo;s Digital Team</h4>
+        <!-- Add disclaimer -->
         <div id="list"><img class="center-block" src="loading.gif" style="padding-top:5em;"></img></div>
 
         <div class="modal fade" id="digest-modal" tabindex="-1" role="dialog" aria-labelledby="digest-title" aria-hidden="true">
@@ -48,31 +49,35 @@
         var xml = $(data);
         $("#list").empty();
         $("#digest").empty();
-        xml.find("entry").each(function() {
-          var date = new Date($(this).find("published").text());
-          var now = new Date();
-          var difference = now - date;
-          item = {
-              title: $(this).find("title").text().trim(),
-              link: $(this).find("content").find("tr.url > td").text().trim().replace(/\/$/, ""),
-              description: $(this).find("content").find("tr.abstractNote > td").text(),
-              date: date.toDateString(),
-              user: $(this).find("name").text(),
-              id: $(this).find("id").text()
-          }
-          if(item.link.length > 1) {
-            $("#list").append("<h3><a href=" + item.link + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>");
-          } else {
-            $("#list").append("<h3><a href=" + item.id + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>");
-          }
-          if(difference < 864000000) {
-            if(item.link.length > 1) {
-              $("#digest").append("<p>" + item.title + " - " + item.link + "</p>");
-            } else {
-              $("#digest").append("<p>" + item.title + " - " + item.id + "</p>");
+        if (xml.find("entry").length) {
+          xml.find("entry").each(function() {
+            var date = new Date($(this).find("published").text());
+            var now = new Date();
+            var difference = now - date;
+            item = {
+                title: $(this).find("title").text().trim(),
+                link: $(this).find("content").find("tr.url > td").text().trim().replace(/\/$/, ""),
+                description: $(this).find("content").find("tr.abstractNote > td").text(),
+                date: date.toDateString(),
+                user: $(this).find("name").text(),
+                id: $(this).find("id").text()
             }
-          }
-        });
+            if(item.link.length > 1) {
+              $("#list").append("<h3><a href=" + item.link + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>");
+            } else {
+              $("#list").append("<h3><a href=" + item.id + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>");
+            }
+            if(difference < 864000000) {
+              if(item.link.length > 1) {
+                $("#digest").append("<p>" + item.title + " - " + item.link + "</p>");
+              } else {
+                $("#digest").append("<p>" + item.title + " - " + item.id + "</p>");
+              }
+            }
+          });
+        } else {
+          $("#list").append("<h3 class='text-center'>There's nothing here (yet)</h3><img class='center-block' src='loading.gif'>");
+        }
       });
     </script>
   </body>
