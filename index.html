@@ -14,7 +14,7 @@
       <div class="col-xs-10 col-xs-offset-1">
         <div class="pull-right" style="padding-top:1em;">
           <button class="btn btn-default" data-toggle="modal" data-target="#digest-modal">weekly digest</button>
-          <a href="https://api.zotero.org/users/319683/items/top?start=0&format=atom&v=1" class="btn btn-default" href=>subscribe to feed</a>
+          <a href="https://api.zotero.org/groups/520939/items/top?start=0&format=atom&v=1" class="btn btn-default" href=>subscribe to feed</a>
         </div>
         <h1>What We&rsquo;re Reading</h1>
         <h4>Rockefeller Archive Center&rsquo;s Digital Team</h4>
@@ -43,7 +43,7 @@
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
-      var rssurl = "https://api.zotero.org/users/319683/items/top?start=0&format=atom&v=1";
+      var rssurl = "https://api.zotero.org/groups/520939/items/top?start=0&format=atom&v=1";
       $.get(rssurl, function(data) {
         var xml = $(data);
         $("#list").empty();
