@@ -3,22 +3,14 @@ $(document).ready(function(){
   var startItem = 0;
   var paginate = 25;
   var lastItem = page * paginate;
-  groupId = 520939
+  groupId = 520939;
   var rssurl = "https://api.zotero.org/groups/"+groupId+"/items/top?start="+ startItem +"&limit=" + lastItem + "&format=atom&v=1";
-
-  function loadNext(page, startItem, lastItem, paginate) {
-    var page = page+1;
-    var startItem = startItem+paginate;
-    var lastItem = lastItem+paginate;
-    var rssurl = "https://api.zotero.org/groups/"+groupId+"/items/top?start="+ startItem +"&limit=" + lastItem + "&format=atom&v=1";
-    fetchData(rssurl, page);
-  }
 
   function fetchData(rssurl, page, startItem, lastItem, paginate) {
     $.get(rssurl, function(data) {
+      console.log(rssurl)
       var xml = $(data);
-      $("#list").empty();
-      $("#digest").empty();
+      $("#list img").remove();
       if (xml.find("entry").length) {
         xml.find("entry").each(function() {
           var date = new Date($(this).find("published").text());
@@ -46,14 +38,24 @@ $(document).ready(function(){
           }
         });
       } else {
-        $("#list").append("<h3 class='text-center'>There's nothing here (yet)</h3><img class='center-block' src='img/loading.gif'>");
+        $("#list").append("<h3 class='text-center'>There's nothing here (yet)</h3><img class='center-block' src='img/loading.gif'></img>");
       }
-      if (xml.find("entry").length > paginate*page) {
-        $("#list").append("<button onclick='loadNext("+page+", "+startItem+", "+lastItem+", "+paginate+")' class='btn btn-default center-block'>read more</button>");
+      if (xml.find("entry").length == paginate*page) {
+        $("#list").append("<button data-page="+page+" data-startItem="+startItem+" data-lastItem="+lastItem+" data-paginate="+paginate+" class='loadNext btn btn-default center-block'>read more</button>");
       }
     });
   }
 
   fetchData(rssurl, page, startItem, lastItem, paginate);
+
+  $(document).on("click", "button.loadNext", function() {
+    $("button.loadNext").remove();
+    $("#list").append("<img class='center-block' src='img/loading.gif'></img>");
+    var page = parseInt($(this).attr("data-page"))+1;
+    var startItem = parseInt($(this).attr("data-startItem"))+parseInt($(this).attr("data-paginate"));
+    var lastItem = parseInt($(this).attr("data-lastItem"))+parseInt($(this).attr("data-paginate"));
+    var rssurl = "https://api.zotero.org/groups/"+groupId+"/items/top?start="+ startItem +"&limit=" + lastItem + "&format=atom&v=1";
+    fetchData(rssurl, page, startItem, lastItem, paginate);
+  });
 
 });
