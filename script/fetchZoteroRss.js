@@ -3,7 +3,7 @@ $(document).ready(function(){
   var startItem = 0;
   var paginate = 25;
   var lastItem = page * paginate;
-  groupId = 222650;
+  groupId = 520939;
   var rssurl = "https://api.zotero.org/groups/"+groupId+"/items/top?start="+ startItem +"&limit=" + lastItem + "&format=atom&v=1";
 
   function fetchData(rssurl, page, startItem, lastItem, paginate) {
