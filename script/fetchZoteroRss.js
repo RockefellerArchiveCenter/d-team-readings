@@ -3,14 +3,13 @@ $(document).ready(function(){
   var startItem = 0;
   var paginate = 25;
   var lastItem = page * paginate;
-  groupId = 520939;
+  groupId = 222650;
   var rssurl = "https://api.zotero.org/groups/"+groupId+"/items/top?start="+ startItem +"&limit=" + lastItem + "&format=atom&v=1";
 
   function fetchData(rssurl, page, startItem, lastItem, paginate) {
     $.get(rssurl, function(data) {
       console.log(rssurl)
       var xml = $(data);
-      $("#list img").remove();
       if (xml.find("entry").length) {
         xml.find("entry").each(function() {
           var date = new Date($(this).find("published").text());
@@ -25,9 +24,11 @@ $(document).ready(function(){
               id: $(this).find("id").text()
           }
           if(item.link.length > 1) {
-            $("#list").append("<h3><a href=" + item.link + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>");
+            $("#list img").fadeOut();
+            $("#list").append($("<h3><a href=" + item.link + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>").hide().fadeIn(1000));
           } else {
-            $("#list").append("<h3><a href=" + item.id + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>");
+            $("#list img").fadeOut();
+            $("#list").append($("<h3><a href=" + item.id + ">" + item.title + "</a> <small style='white-space:nowrap;'>" + item.date + "</small></h3><p>Added by " + item.user + "</p><p> " + item.description + "</p>").hide().fadeIn(1000));
           }
           if(difference < 864000000) {
             if(item.link.length > 1) {
@@ -38,10 +39,10 @@ $(document).ready(function(){
           }
         });
       } else {
-        $("#list").append("<h3 class='text-center'>There's nothing here (yet)</h3><img class='center-block' src='img/loading.gif'></img>");
+        $("#list").append($("<h3 class='text-center'>There's nothing here (yet)</h3>").hide().fadeIn(1000));
       }
       if (xml.find("entry").length == paginate*page) {
-        $("#list").append("<button data-page="+page+" data-startItem="+startItem+" data-lastItem="+lastItem+" data-paginate="+paginate+" class='loadNext btn btn-default center-block'>read more</button>");
+        $("#list").append("<button style='margin-bottom:2em;' data-page="+page+" data-startItem="+startItem+" data-lastItem="+lastItem+" data-paginate="+paginate+" class='loadNext btn btn-default center-block'>read more</button>");
       }
     });
   }
