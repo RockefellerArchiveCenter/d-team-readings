@@ -4,7 +4,8 @@ $(document).ready(function(){
   var paginate = 25;
   var lastItem = page * paginate;
   groupId = 520939;
-  var rssurl = "https://api.zotero.org/groups/"+groupId+"/items/top?start="+ startItem +"&limit=" + lastItem + "&format=atom&v=1";
+  collectionId = "99FP9B3Z";
+  var rssurl = "https://api.zotero.org/groups/"+groupId+"/collections/"+collectionId+"/items/top?start="+ startItem +"&limit=" + lastItem + "&format=atom&v=1";
 
   function fetchData(rssurl, page, startItem, lastItem, paginate) {
     $.get(rssurl, function(data) {
